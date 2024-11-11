@@ -1,0 +1,115 @@
+VHDL
+
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_Arith.ALL;
+use IEEE.STD_LOGIC_Unsigned.ALL;
+
+entity n_counter is
+    Port ( rst : in  STD_LOGIC;
+           clk : in  STD_LOGIC;
+           y : out  STD_LOGIC_VECTOR (3 downto 0));
+end n_counter;
+
+architecture Behavioral of n_counter is
+signal temp : STD_LOGIC_VECTOR(3 downto 0);
+begin
+process (clk)
+begin
+
+if rising_edge(clk) then
+  if rst='1' then
+    temp <= (others => '0');
+  else
+    if (temp = "1001") then
+	   temp <= (others => '0');
+  else
+    temp <= temp + 1;
+	 end if;
+	end if;
+end if;
+
+end process;
+y <= temp;
+end Behavioral;
+
+
+
+
+
+
+
+
+TEST BENCH
+
+
+
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+ 
+ENTITY n_counter_tb IS
+END n_counter_tb;
+ 
+ARCHITECTURE behavior OF n_counter_tb IS 
+ 
+ 
+    COMPONENT n_counter
+    PORT(
+         rst : IN  std_logic;
+         clk : IN  std_logic;
+         y : OUT  std_logic_vector(3 downto 0)
+        );
+    END COMPONENT;
+    
+
+   --Inputs
+   signal rst : std_logic := '0';
+   signal clk : std_logic := '0';
+
+ 	--Outputs
+   signal y : std_logic_vector(3 downto 0);
+
+ 
+BEGIN
+ 
+	-- Instantiate the Unit Under Test (UUT)
+   uut: n_counter PORT MAP (
+          rst => rst,
+          clk => clk,
+          y => y
+        );
+
+   -- Clock process definitions
+   clk_process :process
+   begin
+		clk <= '0';
+		wait for 5 ns;
+		clk <= '1';
+		wait for 5 ns;
+   end process;
+ 
+
+   -- Stimulus process
+   stim_proc: process
+   begin		
+	rst <= '1' ;
+	wait for 20 ns;
+	
+	rst <= '0' ;
+	wait for 40 ns;
+	
+	
+	rst <= '1' ;
+	wait for 60 ns;
+	
+	
+	rst <= '0' ;
+	wait for 20 ns;
+	
+	
+
+   end process;
+
+END;
