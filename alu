@@ -1,0 +1,118 @@
+VHDL
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_Arith.ALL;
+use IEEE.STD_LOGIC_Unsigned.ALL;
+entity alu is
+    Port ( a,b : in  STD_LOGIC_VECTOR (3 downto 0);
+           sel : in  STD_LOGIC_VECTOR (2 downto 0);
+           op : out  STD_LOGIC_VECTOR (3 downto 0));
+end alu;
+
+architecture Behavioral of alu is
+
+begin
+  process(a,b,sel)
+    begin
+      case sel is
+         when "000" => op <= a+b;
+         when "001" => op <= a-b;
+         when "010" => op <= a-1;
+         when "011" => op <= b-1;
+         when "100" => op <= a and b;
+         when "101" => op <= a or b;
+         when "110" => op <= a nand b;
+         when "111" => op <= not a ;
+         when others => null;
+      end case;
+  end process;
+end Behavioral;
+
+
+
+
+
+TEST BENCH
+
+
+
+
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+
+ 
+ENTITY alu_tb IS
+END alu_tb;
+ 
+ARCHITECTURE behavior OF alu_tb IS 
+ 
+    -- Component Declaration for the Unit Under Test (UUT)
+ 
+    COMPONENT alu
+    PORT(
+         a : IN  std_logic_vector(3 downto 0);
+         b : IN  std_logic_vector(3 downto 0);
+         sel : IN  std_logic_vector(2 downto 0);
+         op : OUT  std_logic_vector(3 downto 0)
+        );
+    END COMPONENT;
+    
+
+   --Inputs
+   signal a : std_logic_vector(3 downto 0) := (others => '0');
+   signal b : std_logic_vector(3 downto 0) := (others => '0');
+   signal sel : std_logic_vector(2 downto 0) := (others => '0');
+
+ 	--Outputs
+   signal op : std_logic_vector(3 downto 0);
+   -- No clocks detected in port list. Replace <clock> below with 
+   -- appropriate port name 
+ 
+ 
+BEGIN
+ 
+	-- Instantiate the Unit Under Test (UUT)
+   uut: alu PORT MAP (
+          a => a,
+          b => b,
+          sel => sel,
+          op => op
+        );
+
+   
+ 
+
+   -- Stimulus process
+   stim_proc: process
+   begin		
+	   a <= "1000";
+	   b <= "0001";
+	   sel <= "000";
+      wait for 10 ns;
+
+      sel <= "001";
+      wait for 10 ns;
+
+      sel <= "010";
+      wait for 10 ns;
+
+      sel <= "011";
+      wait for 10 ns;
+
+      sel <= "100";
+      wait for 10 ns;
+
+      sel <= "101";
+      wait for 10 ns;
+
+      sel <= "110";
+      wait for 10 ns;
+
+      sel <= "111";
+      wait for 10 ns;
+
+   end process;
+
+END;
