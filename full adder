@@ -1,0 +1,102 @@
+VHDL 
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+entity F_A is
+    Port ( a : in  STD_LOGIC;
+           b : in  STD_LOGIC;
+           cin : in  STD_LOGIC;
+           s : out  STD_LOGIC;
+           co : out  STD_LOGIC);
+end F_A;
+
+architecture Behavioral of F_A is
+
+begin
+s <= a xor b xor cin ;
+co <= ((a and b) or ( b and cin) or (a and cin));
+
+end Behavioral;
+
+
+
+TEST BENCH
+
+
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+ 
+ENTITY F_A_tb IS
+END F_A_tb;
+ 
+ARCHITECTURE behavior OF F_A_tb IS 
+ 
+    -- Component Declaration for the Unit Under Test (UUT)
+ 
+    COMPONENT F_A
+    PORT(
+         a : IN  std_logic;
+         b : IN  std_logic;
+         cin : IN  std_logic;
+         s : OUT  std_logic;
+         co : OUT  std_logic
+        );
+    END COMPONENT;
+    
+
+   --Inputs
+   signal a : std_logic := '0';
+   signal b : std_logic := '0';
+   signal cin : std_logic := '0';
+
+ 	--Outputs
+   signal s : std_logic;
+   signal co : std_logic;
+   -- No clocks detected in port list. Replace <clock> below with 
+   -- appropriate port name 
+ 
+  
+ 
+BEGIN
+ 
+	-- Instantiate the Unit Under Test (UUT)
+   uut: F_A PORT MAP (
+          a => a,
+          b => b,
+          cin => cin,
+          s => s,
+          co => co
+        );
+
+   
+
+   -- Stimulus process
+   stim_proc: process
+   begin
+a <='0';
+b<='0';
+cin<='0';	
+      
+      wait for 20 ns;
+a <='0';
+b<='1';
+cin<='0';	
+      
+      wait for 20 ns;
+a <='1';
+b<='0';
+cin<='1';	
+      
+      wait for 20 ns;
+a <='1';
+b<='1';
+cin<='1';	
+      
+      wait for 20 ns;		
+
+
+
+   end process;
+
+END;
